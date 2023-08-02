@@ -1,5 +1,3 @@
-package kb;
-
 public class Employee {
  private double performanceScore;
  private double bonus;
