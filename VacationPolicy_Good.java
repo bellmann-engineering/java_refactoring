@@ -1,49 +1,55 @@
-public class VacationPolicy {
-    private static final double US_ACCRUAL_RATE = 1.0;
-    private static final double EU_ACCRUAL_RATE = 1.5;
-
-    private double usVacationBalance;
-    private double euVacationBalance;
-
-    public VacationPolicy() {
-        usVacationBalance = 0;
-        euVacationBalance = 0;
+public abstract class VacationPolicy {
+    public void accrueVacation() {
+        double vacationAccrual = calculateVacationAccrual();
+        vacationAccrual = applyMinimumVacation(vacationAccrual);
+        applyToPayrollRecord(vacationAccrual);
     }
 
-    private void accrueVacation(double accrualRate) {
-        if (accrualRate < 0) {
-            throw new IllegalArgumentException("Accrual rate cannot be negative.");
-        }
-        usVacationBalance += accrualRate;
-        euVacationBalance += accrualRate;
-    }
+    protected abstract double calculateVacationAccrual();
 
-    public void accrueUSDivisionVacation() {
-        accrueVacation(US_ACCRUAL_RATE);
-    }
+    protected abstract double applyMinimumVacation(double vacationAccrual);
 
-    public void accrueEUDivisionVacation() {
-        accrueVacation(EU_ACCRUAL_RATE);
-    }
-
-    public double getUSVacationBalance() {
-        return usVacationBalance;
-    }
-
-    public double getEUVacationBalance() {
-        return euVacationBalance;
+    private void applyToPayrollRecord(double vacationAccrual) {
+        // Some logic to apply the calculated vacation accrual to the payroll record
+        // Replace this with your actual logic
+        System.out.println("Vacation accrual applied to payroll: " + vacationAccrual + " days");
     }
 
     public static void main(String[] args) {
-        VacationPolicy vacationPolicy = new VacationPolicy();
+        VacationPolicy usVacationPolicy = new USVacationPolicy();
+        VacationPolicy euVacationPolicy = new EUVacationPolicy();
 
-        vacationPolicy.accrueUSDivisionVacation();
-        vacationPolicy.accrueEUDivisionVacation();
+        usVacationPolicy.accrueVacation();
+        euVacationPolicy.accrueVacation();
+    }
+}
 
-        double usBalance = vacationPolicy.getUSVacationBalance();
-        double euBalance = vacationPolicy.getEUVacationBalance();
+class USVacationPolicy extends VacationPolicy {
+    @Override
+    protected double calculateVacationAccrual() {
+        // Add logic to calculate vacation accrual for US division
+        return 0.0;
+    }
 
-        System.out.println("US Vacation Balance: " + usBalance + " days");
-        System.out.println("EU Vacation Balance: " + euBalance + " days");
+    @Override
+    protected double applyMinimumVacation(double vacationAccrual) {
+        if (vacationAccrual < 10)
+            vacationAccrual = 10;
+        return vacationAccrual;
+    }
+}
+
+class EUVacationPolicy extends VacationPolicy {
+    @Override
+    protected double calculateVacationAccrual() {
+        // Add logic to calculate vacation accrual for EU division
+        return 0.0;
+    }
+
+    @Override
+    protected double applyMinimumVacation(double vacationAccrual) {
+        if (vacationAccrual < 24)
+            vacationAccrual = 24;
+        return vacationAccrual;
     }
 }
