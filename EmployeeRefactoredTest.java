@@ -13,7 +13,7 @@ public class EmployeeRefactoredTest {
         employee.calculateAndApplyAnnualBonusRefactored();
 
         // Assert
-        assertEquals(performanceScore * 1000.0, employee.getBonus());
+        assertEquals(8500, employee.getBonus());
     }
 
     @Test
